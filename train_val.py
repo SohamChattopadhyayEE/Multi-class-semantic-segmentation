@@ -30,19 +30,19 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 parser = argparse.ArgumentParser(description = 'Training segmentation model')
 # Paths
 parser.add_argument('-tr','--tr_path',type=str, 
-                    default = 'E:/InternshipNorway/Project_5_SemanticSegmentation/Dataset/Millipiary/Sample/Sample dataset_Millipiary/', 
+                    default = './data/train/', 
                     help = 'Path to the train data')
 parser.add_argument('-val','--val_path',type=str, 
-                    default = 'E:/InternshipNorway/Project_5_SemanticSegmentation/Dataset/Millipiary/Sample/Sample dataset_Millipiary/', 
+                    default = './data/validation/', 
                     help = 'Path to the validation data')
 parser.add_argument('-model_path','--model_path',type=str, 
-                    default = 'E:/GITHUBProjects/semantic_scene_segmentation', 
+                    default = './data', 
                     help = 'Path where the model is going to be saved')
 parser.add_argument('-plot_path','--plot_path',type=str, 
-                    default = 'E:/GITHUBProjects/semantic_scene_segmentation', 
+                    default = './data', 
                     help = 'Path where the loss plots will be saved')
 parser.add_argument('-image_save_path','--image_save_path',type=str, 
-                    default = 'E:/GITHUBProjects/semantic_scene_segmentation', 
+                    default = './data', 
                     help = 'Paths where sample test images will be saved')
 
 # Model arguments
@@ -72,33 +72,24 @@ n_epoch = args.epochs
 optimizer_name = args.optimizer_func
 momentum = args.momentum
 
-'''
-img_dir_train = 'E:/InternshipNorway/Project_5_SemanticSegmentation/Dataset/Millipiary/Sample/Sample dataset_Millipiary/Original'
-mask_dir_train = 'E:/InternshipNorway/Project_5_SemanticSegmentation/Dataset/Millipiary/Sample/Sample dataset_Millipiary/GT'
-img_dir_val = 'E:/InternshipNorway/Project_5_SemanticSegmentation/Dataset/Millipiary/Sample/Sample dataset_Millipiary/Original'
-mask_dir_val = 'E:/InternshipNorway/Project_5_SemanticSegmentation/Dataset/Millipiary/Sample/Sample dataset_Millipiary/GT'
-'''
 train_path = args.tr_path
 val_path = args.val_path
 snapshot_path = args.model_path
-imsave_path = plot_path = snapshot_path
+imsave_path = args.image_save_path
+plot_path = args.plot_path
 
-#train_dataset = CustomDataset(img_dir_train, mask_dir_train, transform=True)
 train_dataset = mapillaryVistasLoader(train_path, img_size=(224, 224), is_transform=True)
 train_loader = DataLoader(train_dataset, batch_size)
 
-#val_dataset = CustomDataset(img_dir_val, mask_dir_val, transform=True)
 val_dataset = mapillaryVistasLoader(val_path, img_size=(224,224), is_transform=True)
 val_loader = DataLoader(val_dataset, batch_size)
 
 
 
-print('OK -> 1')
 models = ['UNet', 'R2UNet', 'AttUNet', 'R2AttUNet']
 model_name = models[args.seg_model_no]
 net = segmentation_model(in_channels, n_classes, model_name)
 net = net.to(device)
-#optimizer = optim.RMSprop(net.parameters(), lr=lr)#, weight_decay=1e-8, momentum=0.9)
 optimizer = get_optimizers(net.parameters(), optimizer_name, lr, momentum)
 if n_classes == 1 : 
   criterion = nn.BCEWithLogitsLoss()
@@ -106,7 +97,6 @@ else :
   criterion = get_loss_function()
 
 cal_score = runningScore(n_classes)
-print('OK -> 2')
 
 
 load_model=snapshot_path+'/model_'+model_name+'.pt'
@@ -143,7 +133,7 @@ for epoch in range(n_epoch):
   net.train()
   train_loss = 0.0
   for i, data in enumerate(train_loader) :
-    print(i+1)
+    print("Batch : {} of {}".format(i+1, len(train_loader)))
     optimizer.zero_grad()
     image, label = data
     image, label = image.to(device), label.to(device)
@@ -164,11 +154,11 @@ for epoch in range(n_epoch):
   with torch.no_grad():
     val_loss = 0.0
     val_loss_abs = 0.0
-    for data_val in val_loader:
+    for i, data_val in enumerate(val_loader):
+      print("Batch : {} of {}".format(i+1, len(val_loader)))
       image_val, label_val = data_val
       image_val, label_val = image_val.to(device), label_val.to(device)
       out_val = net(image_val) 
-      #loss = criterion(out_val, label_val.float())
 
       loss = criterion(out_val, label_val)
       val_loss += loss.item()*image_val.size(0)
@@ -178,7 +168,6 @@ for epoch in range(n_epoch):
       cal_score.update(correct, gt)
 
     val_loss_gph.append(val_loss/(len(val_dataset)))
-    #val_loss_abs = abs(1/(val_loss/len(val_dataset)))
 
 
     image_sample, label_sample = next(iter(val_loader))
@@ -187,7 +176,6 @@ for epoch in range(n_epoch):
     out_sample = net(image_sample)
     pred_sample = np.squeeze(out_sample.data.max(1)[1].cpu().numpy(), axis=0)
     decoded_sample = val_dataset.decode_segmap(pred_sample)
-    #cv2.imshow('image',decoded_sample)
     plt.imsave(imsave_path + '/' + 'sample_prediciton.png', decoded_sample)
 
 
@@ -208,8 +196,6 @@ for epoch in range(n_epoch):
         min_loss=val_loss
         torch.save(state,os.path.join(snapshot_path+'/',"model_"+model_name+'.pt'))
         net.to(device)
-    #print('Epoch : {}    Validation loss : {}'.format(epoch+1, abs(1/(val_loss/len(val_dataset)))))
     print('Epoch : {}    Validation loss : {}'.format(epoch+1, val_loss/len(val_dataset)))
-    #predict_images(val_loader, net, 'val')
   plot(val_loss_gph,train_loss_gph)
     
