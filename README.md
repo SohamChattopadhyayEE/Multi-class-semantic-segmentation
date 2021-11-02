@@ -18,7 +18,7 @@ Since the entire project is based on `Python` programming language, it is necess
 The Python packages which are in use in this project are `torch, matplotlib, numpy, pandas, OpenCV, and scikit-learn`. All these dependencies can be installed just by the following command line argument
 - `pip install requirements.txt` 
 
-## Code execution
+## Code Implement
 - ### Data paths :
       Current directory -----> data
                                  |
@@ -48,4 +48,44 @@ The Python packages which are in use in this project are `torch, matplotlib, num
                                             V             V
                                           images        labels
        
-- Where the folder `images` contains original images in `.jpg` format and the folder `labels` contains corresponding labels in `.png` format.  
+- Where the folder `images` contains original images in `.jpg` format and the folder `labels` contains corresponding labels/ground truths in `.png` format.  
+- ### Training and Validation :
+      python3 train_val.py -help
+      
+      
+      PS E:\semantic_scene_segmentation> python train_val.py -help
+      usage: train_val.py [-h] [-tr TR_PATH] [-val VAL_PATH] [-model_path MODEL_PATH] [-plot_path PLOT_PATH] [-image_save_path IMAGE_SAVE_PATH]
+                          [-seg_m SEG_MODEL_NO] [-e EPOCHS] [-bs BATCH_SIZE] [-in_channels IN_CHANNELS] [-n_classes NUM_CLASSES]
+                          [-lr LEARNING_RATE] [-mm MOMENTUM] [-o OPTIMIZER_FUNC]
+
+      Training segmentation model
+
+      optional arguments:
+        -h, --help            show this help message and exit
+        -tr TR_PATH, --tr_path TR_PATH
+                              Path to the train data
+        -val VAL_PATH, --val_path VAL_PATH
+                              Path to the validation data
+        -model_path MODEL_PATH, --model_path MODEL_PATH
+                              Path where the model is going to be saved
+        -plot_path PLOT_PATH, --plot_path PLOT_PATH
+                              Path where the loss plots will be saved
+        -image_save_path IMAGE_SAVE_PATH, --image_save_path IMAGE_SAVE_PATH
+                              Paths where sample test images will be saved
+        -seg_m SEG_MODEL_NO, --seg_model_no SEG_MODEL_NO
+                              The segmentation model to be used
+        -e EPOCHS, --epochs EPOCHS
+                              Number of epochs
+        -bs BATCH_SIZE, --batch_size BATCH_SIZE
+                              Batch size
+        -in_channels IN_CHANNELS, --in_channels IN_CHANNELS
+                              Input channels
+        -n_classes NUM_CLASSES, --num_classes NUM_CLASSES
+                              Number of classes the segment map has
+        -lr LEARNING_RATE, --learning_rate LEARNING_RATE
+                              The learning rate of the optimizer
+        -mm MOMENTUM, --momentum MOMENTUM
+                              The momentum of the optimizer
+        -o OPTIMIZER_FUNC, --optimizer_func OPTIMIZER_FUNC
+                              The optimizer
+   - python3 train_val.py -tr data/train/ -val data/validation/ -model_path data -seg_m 0 -e 200 -bs 50 -n_classes 65 -o RMSprop
