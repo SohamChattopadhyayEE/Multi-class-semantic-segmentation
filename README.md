@@ -10,4 +10,5 @@ The deep learning architectures which have been used here in this project are-
 - `R2UNet` : https://arxiv.org/abs/1802.06955
 - `AttUNet` : https://arxiv.org/abs/1804.03999
 - `R2AttUNet` : Embedding Attention module to R2UNet
+
 The codes of these network architectures are given [here](https://github.com/SohamChattopadhyayEE/Multi-class-semantic-segmentation/tree/main/models/network).
