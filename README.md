@@ -17,3 +17,33 @@ The codes of these network architectures are given [here](https://github.com/Soh
 Since the entire project is based on `Python` programming language, it is necessary to have Python installed in the system. It is recommended to use Python with version `>=3.6`.
 The Python packages which are in use in this project are `torch, matplotlib, numpy, pandas, OpenCV, and scikit-learn`. All these dependencies can be installed just by the following command line argument
 - `pip install requirements.txt` 
+
+## Code execution
+- ### Data paths
+      Current directory -----> data
+                                 |
+                                 |
+                                 |               
+                                 ---------------> train 
+                                 |                 |
+                                 |          ------- -------
+                                 |          |             |
+                                 |          V             V
+                                 |        images        labels
+                                 |
+                                 |
+                                 ---------------> validation    
+                                 |                    |
+                                 |             ------- -------
+                                 |             |             |
+                                 |             V             V
+                                 |           images        labels
+                                 |
+                                 |
+                                 |
+                                 ---------------> test
+                                                   |
+                                            ------- -------
+                                            |             |
+                                            V             V
+                                          images        labels
