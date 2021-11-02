@@ -12,3 +12,6 @@ The deep learning architectures which have been used here in this project are-
 - `R2AttUNet` : Embedding Attention module to R2UNet
 
 The codes of these network architectures are given [here](https://github.com/SohamChattopadhyayEE/Multi-class-semantic-segmentation/tree/main/models/network).
+
+## Dependencies
+Since the entire project is based on `Python` programming language, it is necessary to have Python installed in the system. It is recommended to use Python having version `>=3.6`
