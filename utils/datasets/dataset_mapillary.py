@@ -40,8 +40,8 @@ class mapillaryVistasLoader(data.Dataset):
         self.mean = np.array([80.5423, 91.3162, 81.4312])
         self.files = {}
 
-        self.images_base = os.path.join(self.root, self.split, "Original")
-        self.annotations_base = os.path.join(self.root, self.split, "GT")
+        self.images_base = os.path.join(self.root, self.split, "images")
+        self.annotations_base = os.path.join(self.root, self.split, "labels")
 
         print(self.images_base)
 
