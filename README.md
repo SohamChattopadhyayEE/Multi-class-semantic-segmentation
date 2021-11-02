@@ -50,7 +50,7 @@ The Python packages which are in use in this project are `torch, matplotlib, num
        
 - Where the folder `images` contains original images in `.jpg` format and the folder `labels` contains corresponding labels/ground truths in `.png` format.  
 - ### Training and Validation :
-      python3 train_val.py -help
+      -help
       
       
       PS E:\semantic_scene_segmentation> python train_val.py -help
@@ -88,6 +88,6 @@ The Python packages which are in use in this project are `torch, matplotlib, num
                               The momentum of the optimizer
         -o OPTIMIZER_FUNC, --optimizer_func OPTIMIZER_FUNC
                               The optimizer
-   - Run following for training and validation 
+   - Run the following for training and validation 
   
       `python3 train_val.py -tr data/train/ -val data/validation/ -model_path data -seg_m 0 -e 200 -bs 50 -n_classes 65 -o RMSprop`
