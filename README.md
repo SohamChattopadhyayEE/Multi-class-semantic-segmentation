@@ -19,7 +19,7 @@ The Python packages which are in use in this project are `torch, matplotlib, num
 - `pip install requirements.txt` 
 
 ## Code execution
-- ### Data paths
+- ### Data paths :
       Current directory -----> data
                                  |
                                  |
@@ -47,3 +47,5 @@ The Python packages which are in use in this project are `torch, matplotlib, num
                                             |             |
                                             V             V
                                           images        labels
+       
+- Where the folder `images` contains original images in `.jpg` format and the folder `labels` contains corresponding labels in `.png` format.  
