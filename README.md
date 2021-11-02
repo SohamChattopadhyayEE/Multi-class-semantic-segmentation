@@ -88,4 +88,6 @@ The Python packages which are in use in this project are `torch, matplotlib, num
                               The momentum of the optimizer
         -o OPTIMIZER_FUNC, --optimizer_func OPTIMIZER_FUNC
                               The optimizer
-   - python3 train_val.py -tr data/train/ -val data/validation/ -model_path data -seg_m 0 -e 200 -bs 50 -n_classes 65 -o RMSprop
+   - Run following for training and validation 
+  
+      `python3 train_val.py -tr data/train/ -val data/validation/ -model_path data -seg_m 0 -e 200 -bs 50 -n_classes 65 -o RMSprop`
